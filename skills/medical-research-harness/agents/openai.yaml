@@ -1,0 +1,4 @@
+interface:
+  display_name: "医疗数据研究 Harness"
+  short_description: "指导医疗研究的数据处理、实验设计、偏倚控制与可追溯结果汇总"
+  default_prompt: "使用 $medical-research-harness 检查当前研究契约与证据，指导数据处理、实验设计、偏倚评估和结果汇总。"

@@ -1,0 +1,24 @@
+{
+  "format_version": 1,
+  "study_id": "",
+  "phase": "design",
+  "artifacts": [
+    {"role": "protocol", "status": "planned", "path": "", "sha256": "", "locator": "Protocol", "note": ""},
+    {"role": "data_dictionary", "status": "planned", "path": "", "sha256": "", "locator": "Data dictionary", "note": ""},
+    {"role": "bias_plan", "status": "planned", "path": "", "sha256": "", "locator": "Bias plan", "note": ""},
+    {"role": "analysis_plan", "status": "planned", "path": "", "sha256": "", "locator": "Analysis plan", "note": ""},
+    {"role": "approval", "status": "planned", "path": "", "sha256": "", "locator": "", "note": ""},
+    {"role": "protocol_lock", "status": "planned", "path": "", "sha256": "", "locator": "", "note": ""},
+    {"role": "task_spec", "status": "planned", "path": "", "sha256": "", "locator": "", "note": ""},
+    {"role": "run_registration", "status": "planned", "path": "", "sha256": "", "locator": "", "note": ""},
+    {"role": "data_identity", "status": "planned", "path": "", "sha256": "", "locator": "", "note": ""},
+    {"role": "data_audit", "status": "planned", "path": "", "sha256": "", "locator": "", "note": ""},
+    {"role": "split_audit", "status": "planned", "path": "", "sha256": "", "locator": "", "note": ""},
+    {"role": "preprocessing_audit", "status": "planned", "path": "", "sha256": "", "locator": "", "note": ""},
+    {"role": "run_record", "status": "planned", "path": "", "sha256": "", "locator": "", "note": ""},
+    {"role": "metrics", "status": "planned", "path": "", "sha256": "", "locator": "", "note": ""},
+    {"role": "bias_assessment", "status": "planned", "path": "", "sha256": "", "locator": "", "note": ""},
+    {"role": "result_summary", "status": "planned", "path": "", "sha256": "", "locator": "", "note": ""},
+    {"role": "independent_review", "status": "planned", "path": "", "sha256": "", "locator": "", "note": ""}
+  ]
+}

@@ -1,0 +1,55 @@
+{
+  "study_id": "SYNTHETIC-DEMO",
+  "protocol": "protocol.md",
+  "manifests": {"rows": "rows.csv", "folds": "folds.csv"},
+  "task_template": {
+    "research_objective": "SYNTHETIC SOFTWARE DEMO: demonstrate auditable research tasks",
+    "scientific_question": "Can the planned analysis be reconciled without omitting failed attempts?",
+    "hypothesis": "Software behaviour only; no clinical hypothesis is tested",
+    "context": "Synthetic records, simulated run snapshots and invented metrics; never clinical evidence",
+    "data_source": {"release": "synthetic-v1", "version": "1", "view": "synthetic metadata", "authorization": "synthetic fixture only"},
+    "cohort_definition": {"inclusion": ["synthetic records"], "exclusion": [], "index_time": "index_time column"},
+    "outcome": {"name": "synthetic_future_event", "definition": "simulation only", "horizon": "7 days", "censoring": "N/A: no clinical outcomes"},
+    "predictors": {"allowed": ["synthetic_measurement"], "prohibited": ["future_information"], "temporal_cutoff": "feature_max_time <= index_time"},
+    "temporal_constraints": "Strictly separated train, validation and test periods including label windows",
+    "method": {"preprocessing": "scaler fitted on each training fold", "model": "specified in each task.model", "hyperparameters": "specified in task.parameters"},
+    "experiment_design": {"type": "software demonstration", "budgets": ["no model fitting"], "seeds": [401], "ablations": []},
+    "baseline": "synthetic baseline",
+    "comparison": "predeclared synthetic sensitivity task",
+    "primary_metric": {"name": "synthetic_auc", "direction": "higher", "threshold": null},
+    "secondary_metrics": [],
+    "statistical_test": "N/A: invented metrics test the summary parser only",
+    "validation_strategy": {"split": "synthetic_split_v1", "unit": "patient", "external_validation": "N/A: software fixtures"},
+    "leakage_controls": ["patient", "temporal", "label", "preprocessing", "test_contamination"],
+    "acceptance_criteria": ["known manifest violations are rejected", "all simulated attempts remain visible"],
+    "reproducibility_requirements": ["protocol_hash", "task_design_hash", "manifest_hashes"],
+    "expected_output": ["aggregate audit", "complete run reconciliation"],
+    "risks": ["synthetic checks do not validate clinical methodology"],
+    "do_not_do": ["use_patient_data", "train_models", "claim_clinical_validity"],
+    "dependencies": [],
+    "priority": "P1",
+    "protocol_lock": "protocol-lock.json",
+    "project": "project",
+    "feature_set": "synthetic-v1",
+    "split": "synthetic_split_v1",
+    "resource": "cpu"
+  },
+  "experiments": [
+    {"id": "baseline", "purpose": "exercise successful-run reporting", "model": "synthetic-baseline", "seed": 401, "parameters": {}, "command": ["python3", "analysis.py"]},
+    {"id": "sensitivity", "purpose": "exercise failed-run reporting", "model": "synthetic-sensitivity", "seed": 401, "parameters": {"missing_data": "sensitivity"}, "command": ["python3", "analysis.py", "--sensitivity"]}
+  ],
+  "audit": {
+    "split_order": ["train", "validation", "test"],
+    "patient_disjoint": true,
+    "chronological": true,
+    "label_start": "after_index",
+    "expected_fits": [
+      {"experiment_id": "baseline", "operation": "scaler", "fold_id": "cv1"},
+      {"experiment_id": "baseline", "operation": "scaler", "fold_id": "cv2"},
+      {"experiment_id": "baseline", "operation": "scaler", "fold_id": "final"},
+      {"experiment_id": "sensitivity", "operation": "scaler", "fold_id": "cv1"},
+      {"experiment_id": "sensitivity", "operation": "scaler", "fold_id": "cv2"},
+      {"experiment_id": "sensitivity", "operation": "scaler", "fold_id": "final"}
+    ]
+  }
+}

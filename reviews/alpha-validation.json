@@ -1,0 +1,411 @@
+{
+  "version": "0.1.0-alpha",
+  "date": "2026-10-02",
+  "python": "3.10.18",
+  "platform": "Linux",
+  "scope": "Synthetic software validation only; no clinical experiments or real approvals",
+  "portable_operational_checks": {
+    "passed": 24,
+    "external_validator_used": false
+  },
+  "independent_origin_regression_probes": {
+    "passed": 76,
+    "external_validator_used": false,
+    "note": "Portable replay of separately designed review probes; not a new independent scientific review"
+  },
+  "optional_external_validator_integration": {
+    "passed": 3,
+    "operation": "validate-task only",
+    "environment": "maintainer environment; not a bundled dependency"
+  },
+  "document_evidence_suite": "passed",
+  "source_sha256": {
+    "skills/medical-research-harness/scripts/study.py": "03b7c4216fa109965a8c8f346453c8a3cba679ff28f1fa043588b46ae1c1acf7",
+    "skills/medical-research-harness/scripts/test_study.py": "09c092a48c45a586320e69b062efc800f32fc25ad98daf015471811d45c169c5",
+    "skills/medical-research-harness/scripts/check_bundle.py": "9841ee9b6f859e27e62257a4daedb5e1544923f36420037c7bef9dbd74de7d9f",
+    "skills/medical-research-harness/scripts/test_check_bundle.py": "6ee4ab26d409289c57364be526c4676943f5cd04fcc263435d2427d67d7c5c4c",
+    "tests/review_probes.py": "ff69bce07fd56be02174f956c3dcf06daf13e9be5723684a9ad5813d19d72b57"
+  },
+  "probe_results": [
+    {
+      "case": "baseline",
+      "expected_exit": 0,
+      "exit_code": 0
+    },
+    {
+      "case": "reference-fixture-current-code",
+      "expected_exit": 0,
+      "exit_code": 0
+    },
+    {
+      "case": "source-experiment-omit",
+      "expected_exit": 2,
+      "exit_code": 2
+    },
+    {
+      "case": "source-experiment-add",
+      "expected_exit": 2,
+      "exit_code": 2
+    },
+    {
+      "case": "source-experiment-change",
+      "expected_exit": 2,
+      "exit_code": 2
+    },
+    {
+      "case": "frozen-original-rows-drift",
+      "expected_exit": 2,
+      "exit_code": 2
+    },
+    {
+      "case": "preflight-lock-rows-omit",
+      "expected_exit": 2,
+      "exit_code": 2
+    },
+    {
+      "case": "run-lock-rows-omit",
+      "expected_exit": 1,
+      "exit_code": 1
+    },
+    {
+      "case": "preflight-lock-rows-wrong-path",
+      "expected_exit": 2,
+      "exit_code": 2
+    },
+    {
+      "case": "run-lock-rows-wrong-path",
+      "expected_exit": 1,
+      "exit_code": 1
+    },
+    {
+      "case": "preflight-lock-rows-wrong-hash",
+      "expected_exit": 2,
+      "exit_code": 2
+    },
+    {
+      "case": "run-lock-rows-wrong-hash",
+      "expected_exit": 1,
+      "exit_code": 1
+    },
+    {
+      "case": "audit-alternate-rows",
+      "expected_exit": 1,
+      "exit_code": 1
+    },
+    {
+      "case": "reconcile-alternate-rows",
+      "expected_exit": 1,
+      "exit_code": 1
+    },
+    {
+      "case": "frozen-original-folds-drift",
+      "expected_exit": 2,
+      "exit_code": 2
+    },
+    {
+      "case": "preflight-lock-folds-omit",
+      "expected_exit": 2,
+      "exit_code": 2
+    },
+    {
+      "case": "run-lock-folds-omit",
+      "expected_exit": 1,
+      "exit_code": 1
+    },
+    {
+      "case": "preflight-lock-folds-wrong-path",
+      "expected_exit": 2,
+      "exit_code": 2
+    },
+    {
+      "case": "run-lock-folds-wrong-path",
+      "expected_exit": 1,
+      "exit_code": 1
+    },
+    {
+      "case": "preflight-lock-folds-wrong-hash",
+      "expected_exit": 2,
+      "exit_code": 2
+    },
+    {
+      "case": "run-lock-folds-wrong-hash",
+      "expected_exit": 1,
+      "exit_code": 1
+    },
+    {
+      "case": "audit-alternate-folds",
+      "expected_exit": 1,
+      "exit_code": 1
+    },
+    {
+      "case": "reconcile-alternate-folds",
+      "expected_exit": 1,
+      "exit_code": 1
+    },
+    {
+      "case": "git-status-missing",
+      "expected_exit": 1,
+      "exit_code": 1
+    },
+    {
+      "case": "git-status-null",
+      "expected_exit": 1,
+      "exit_code": 1
+    },
+    {
+      "case": "git-status-bool",
+      "expected_exit": 1,
+      "exit_code": 1
+    },
+    {
+      "case": "git-status-list",
+      "expected_exit": 1,
+      "exit_code": 1
+    },
+    {
+      "case": "git-status-dict",
+      "expected_exit": 1,
+      "exit_code": 1
+    },
+    {
+      "case": "git-status-int",
+      "expected_exit": 1,
+      "exit_code": 1
+    },
+    {
+      "case": "dirty-snapshot-missing",
+      "expected_exit": 1,
+      "exit_code": 1
+    },
+    {
+      "case": "dirty-snapshot-null",
+      "expected_exit": 1,
+      "exit_code": 1
+    },
+    {
+      "case": "dirty-snapshot-short",
+      "expected_exit": 1,
+      "exit_code": 1
+    },
+    {
+      "case": "dirty-snapshot-long",
+      "expected_exit": 1,
+      "exit_code": 1
+    },
+    {
+      "case": "dirty-snapshot-uppercase",
+      "expected_exit": 1,
+      "exit_code": 1
+    },
+    {
+      "case": "dirty-snapshot-nonhex",
+      "expected_exit": 1,
+      "exit_code": 1
+    },
+    {
+      "case": "dirty-snapshot-list",
+      "expected_exit": 1,
+      "exit_code": 1
+    },
+    {
+      "case": "dirty-snapshot-valid",
+      "expected_exit": 0,
+      "exit_code": 0
+    },
+    {
+      "case": "failed-exit-missing",
+      "expected_exit": 1,
+      "exit_code": 1
+    },
+    {
+      "case": "failed-exit-null",
+      "expected_exit": 1,
+      "exit_code": 1
+    },
+    {
+      "case": "failed-exit-bool",
+      "expected_exit": 1,
+      "exit_code": 1
+    },
+    {
+      "case": "failed-exit-str",
+      "expected_exit": 1,
+      "exit_code": 1
+    },
+    {
+      "case": "failed-exit-float",
+      "expected_exit": 1,
+      "exit_code": 1
+    },
+    {
+      "case": "failed-exit-zero",
+      "expected_exit": 1,
+      "exit_code": 1
+    },
+    {
+      "case": "failed-exit-nonzero",
+      "expected_exit": 0,
+      "exit_code": 0
+    },
+    {
+      "case": "failed-exit-signal",
+      "expected_exit": 0,
+      "exit_code": 0
+    },
+    {
+      "case": "failed-reason-missing",
+      "expected_exit": 1,
+      "exit_code": 1
+    },
+    {
+      "case": "failed-reason-dict",
+      "expected_exit": 1,
+      "exit_code": 1
+    },
+    {
+      "case": "failed-reason-null",
+      "expected_exit": 0,
+      "exit_code": 0
+    },
+    {
+      "case": "failed-reason-string",
+      "expected_exit": 0,
+      "exit_code": 0
+    },
+    {
+      "case": "aborted-exit-missing",
+      "expected_exit": 1,
+      "exit_code": 1
+    },
+    {
+      "case": "aborted-exit-null",
+      "expected_exit": 1,
+      "exit_code": 1
+    },
+    {
+      "case": "aborted-exit-bool",
+      "expected_exit": 1,
+      "exit_code": 1
+    },
+    {
+      "case": "aborted-exit-str",
+      "expected_exit": 1,
+      "exit_code": 1
+    },
+    {
+      "case": "aborted-exit-float",
+      "expected_exit": 1,
+      "exit_code": 1
+    },
+    {
+      "case": "aborted-exit-zero",
+      "expected_exit": 1,
+      "exit_code": 1
+    },
+    {
+      "case": "aborted-exit-nonzero",
+      "expected_exit": 0,
+      "exit_code": 0
+    },
+    {
+      "case": "aborted-exit-signal",
+      "expected_exit": 0,
+      "exit_code": 0
+    },
+    {
+      "case": "aborted-reason-missing",
+      "expected_exit": 1,
+      "exit_code": 1
+    },
+    {
+      "case": "aborted-reason-dict",
+      "expected_exit": 1,
+      "exit_code": 1
+    },
+    {
+      "case": "aborted-reason-null",
+      "expected_exit": 0,
+      "exit_code": 0
+    },
+    {
+      "case": "aborted-reason-string",
+      "expected_exit": 0,
+      "exit_code": 0
+    },
+    {
+      "case": "invalid-exit-missing",
+      "expected_exit": 1,
+      "exit_code": 1
+    },
+    {
+      "case": "invalid-exit-null",
+      "expected_exit": 1,
+      "exit_code": 1
+    },
+    {
+      "case": "invalid-exit-bool",
+      "expected_exit": 1,
+      "exit_code": 1
+    },
+    {
+      "case": "invalid-exit-str",
+      "expected_exit": 1,
+      "exit_code": 1
+    },
+    {
+      "case": "invalid-exit-float",
+      "expected_exit": 1,
+      "exit_code": 1
+    },
+    {
+      "case": "invalid-exit-zero",
+      "expected_exit": 1,
+      "exit_code": 1
+    },
+    {
+      "case": "invalid-exit-nonzero",
+      "expected_exit": 0,
+      "exit_code": 0
+    },
+    {
+      "case": "invalid-exit-signal",
+      "expected_exit": 0,
+      "exit_code": 0
+    },
+    {
+      "case": "invalid-reason-missing",
+      "expected_exit": 1,
+      "exit_code": 1
+    },
+    {
+      "case": "invalid-reason-dict",
+      "expected_exit": 1,
+      "exit_code": 1
+    },
+    {
+      "case": "invalid-reason-null",
+      "expected_exit": 0,
+      "exit_code": 0
+    },
+    {
+      "case": "invalid-reason-string",
+      "expected_exit": 0,
+      "exit_code": 0
+    },
+    {
+      "case": "unfinished-preserved",
+      "expected_exit": 1,
+      "exit_code": 1
+    },
+    {
+      "case": "malformed-private-diagnostic",
+      "expected_exit": 2,
+      "exit_code": 2
+    },
+    {
+      "case": "restored-baseline",
+      "expected_exit": 0,
+      "exit_code": 0
+    }
+  ]
+}
