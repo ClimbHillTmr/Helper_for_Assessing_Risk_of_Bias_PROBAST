@@ -92,9 +92,9 @@ def prepare_plan(config_path):
     need(project.is_dir(), "target project does not exist")
     need(isinstance(config["experiments"], list) and config["experiments"], "experiments are required")
     policy = config["audit"]
-    need(isinstance(policy, dict) and set(policy) == {
-        "split_order", "patient_disjoint", "chronological", "label_start", "expected_fits"
-    }, "audit policy fields do not match the contract")
+    allowed_policy_keys = {"split_order", "patient_disjoint", "chronological", "label_start", "expected_fits", "zero_fit_experiments"}
+    need(isinstance(policy, dict) and {"split_order", "patient_disjoint", "chronological", "label_start", "expected_fits"} <= set(policy) <= allowed_policy_keys,
+         "audit policy fields do not match the contract")
     splits = policy["split_order"]
     need(isinstance(splits, list) and len(splits) >= 2 and all(ident(s) for s in splits)
          and len(set(splits)) == len(splits) and splits[0] == "train", "invalid split_order")
@@ -102,7 +102,11 @@ def prepare_plan(config_path):
     need(type(policy["chronological"]) is bool, "chronological must be boolean")
     need(policy["label_start"] in ("after_index", "at_index"), "unsupported label timing policy")
     expected = policy["expected_fits"]
-    need(isinstance(expected, list) and expected, "expected_fits must list every fitted operation/fold")
+    zero_fit_list = policy.get("zero_fit_experiments", [])
+    need(isinstance(zero_fit_list, list) and all(ident(x) for x in zero_fit_list)
+         and len(zero_fit_list) == len(set(zero_fit_list)), "invalid zero_fit_experiments")
+    zero_fit_set = set(zero_fit_list)
+    need(isinstance(expected, list) and (expected or zero_fit_set), "expected_fits must list every fitted operation/fold")
     pairs = []
     for item in expected:
         need(isinstance(item, dict) and set(item) == {"experiment_id", "operation", "fold_id"}
@@ -130,7 +134,9 @@ def prepare_plan(config_path):
         task["harness"] = {"study_id": config["study_id"], "purpose": experiment["purpose"],
                            "protocol_sha256": sha256(protocol), "frozen_manifests": frozen}
         tasks.append(task)
-    need({item["experiment_id"] for item in expected} == ids, "fit policy must cover exactly the planned experiments")
+    fitted_ids = {item["experiment_id"] for item in expected}
+    need((fitted_ids | zero_fit_set) == ids and not (fitted_ids & zero_fit_set),
+         "fit policy must cover exactly the planned experiments")
     plan = {"study_id": config["study_id"], "source_config": str(config_path), "config_sha256": sha256(config_path),
             "protocol": {"path": str(protocol), "sha256": sha256(protocol)}, "audit": policy, "frozen_manifests": frozen,
             "tasks": [{"path": t["task_id"] + ".json", "design_sha256": fingerprint(t)} for t in tasks]}
@@ -169,13 +175,13 @@ def read_plan(path):
     return plan, tasks
 
 
-def table(path, fields):
+def table(path, fields, allow_empty=False):
     with path.open(newline="", encoding="utf-8-sig") as source:
         reader = csv.DictReader(source)
         need(reader.fieldnames is not None and len(reader.fieldnames) == len(fields)
              and set(reader.fieldnames) == fields, "CSV header does not match the manifest contract")
         rows = list(reader)
-    need(rows, "empty audit manifest")
+    need(rows or allow_empty, "empty audit manifest")
     need(all(set(row) == fields and all(nonempty(v) for v in row.values()) for row in rows),
          "audit manifest contains missing values or malformed records")
     return rows
@@ -197,10 +203,12 @@ def audit(plan_path, rows_path, folds_path, fits_path, mode, experiment_id=None,
     else:
         need(experiment_id is None and run_id is None, "planned audit must not claim an executed run")
     policy = plan["audit"]
+    zero_fit_exps = set(policy.get("zero_fit_experiments", []))
     # ponytail: O(rows + fold memberships) memory; use external sorting for oversized manifests.
     rows = table(rows_path, ROW_FIELDS)
     folds = table(folds_path, {"fold_id", "row_id", "role"})
-    fits = table(fits_path, {"experiment_id", "operation", "fold_id", "row_id"})
+    fits = table(fits_path, {"experiment_id", "operation", "fold_id", "row_id"},
+                 allow_empty=(mode == "executed" and experiment_id in zero_fit_exps))
     counts = Counter()
     counts["frozen_rows_changed"] = int(sha256(rows_path) != plan["frozen_manifests"]["rows"]["sha256"])
     counts["frozen_folds_changed"] = int(sha256(folds_path) != plan["frozen_manifests"]["folds"]["sha256"])
@@ -264,9 +272,10 @@ def audit(plan_path, rows_path, folds_path, fits_path, mode, experiment_id=None,
         seen_rows.add(signature)
         counts["fit_outside_training_fold"] += int(
             roles.get(key) != "train" or by_id.get(fit["row_id"], {}).get("split") != "train")
+    all_expected_folds = {x["fold_id"] for x in policy["expected_fits"]}
     counts["missing_fit_operation"] = len(expected - seen)
     counts["unexpected_fit_operation"] = len(seen - expected)
-    counts["unlisted_fold"] = len(fold_ids - {fold for _, _, fold in expected})
+    counts["unlisted_fold"] = len(fold_ids - all_expected_folds)
     failures = {k: v for k, v in sorted(counts.items()) if v}
     fixes = {
         "patient_overlap": "按批准的患者分组重建切分，并使旧验证结果失效。",
@@ -297,6 +306,9 @@ def verify_audit(report, plan_path, mode):
     plan, _ = read_plan(plan_path)
     for key, item in plan["frozen_manifests"].items():
         need(report["inputs"][key]["sha256"] == item["sha256"], "audit cohort/folds differ from frozen task identities")
+    actual = audit(plan_path, *(Path(report["inputs"][key]["path"]) for key in ("rows", "folds", "fits")),
+                   mode, report.get("experiment_id"), report.get("run_id"))
+    need(actual == report, "audit report differs from freshly recomputed manifest evidence")
 
 
 def lock_binds_study(locked, plan):
@@ -311,9 +323,13 @@ def preflight(plan_path, audit_path, lab_path):
     verify_audit(report, plan_path, "planned")
     failed = []
     for entry, task in zip(plan["tasks"], tasks.values()):
-        if task.get("approval", {}).get("status") == "APPROVED":
-            locked = load(Path(task["protocol_lock"]))
-            need(lock_binds_study(locked, plan), "task lock must bind the protocol and frozen cohort/folds")
+        approval = task.get("approval", {})
+        if (not isinstance(approval, dict) or approval.get("status") != "APPROVED"
+                or not all(nonempty(approval.get(key)) for key in ("by", "evidence"))):
+            failed.append(task["task_id"])
+            continue
+        locked = load(Path(task["protocol_lock"]))
+        need(lock_binds_study(locked, plan), "task lock must bind the protocol and frozen cohort/folds")
         result = subprocess.run([sys.executable, str(lab_path), "validate-task",
                                  str(resolve(plan_path.parent, entry["path"]))],
                                 capture_output=True, text=True, timeout=30, check=False)

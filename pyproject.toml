@@ -1,0 +1,55 @@
+[build-system]
+requires = ["setuptools>=61.0"]
+build-backend = "setuptools.build_meta"
+
+[project]
+name = "medical-research-harness"
+version = "0.2.0"
+description = "Methodological open-source toolkit and agent skill for clinical prediction research design, provenance-locked manifest auditing, reproducible run reconciliation, and verbatim-citation literature risk analysis."
+readme = "README.md"
+requires-python = ">=3.10"
+license = {file = "LICENSE"}
+authors = [
+  {name = "Qi Guo"}
+]
+keywords = [
+  "clinical-prediction-models",
+  "risk-of-bias",
+  "PROBAST",
+  "PROBAST-AI",
+  "TRIPOD-AI",
+  "data-leakage",
+  "reproducible-research",
+  "medical-ai-methodology"
+]
+classifiers = [
+  "Development Status :: 4 - Beta",
+  "Intended Audience :: Science/Research",
+  "Intended Audience :: Healthcare Industry",
+  "License :: OSI Approved :: MIT License",
+  "Programming Language :: Python :: 3",
+  "Programming Language :: Python :: 3.10",
+  "Programming Language :: Python :: 3.11",
+  "Programming Language :: Python :: 3.12",
+  "Programming Language :: Python :: 3.13",
+  "Topic :: Scientific/Engineering :: Medical Science Apps.",
+  "Topic :: Scientific/Engineering :: Artificial Intelligence",
+  "Topic :: Software Development :: Quality Assurance"
+]
+dependencies = []
+
+[project.scripts]
+medical-research-harness = "medical_research_harness.cli:main"
+mrh = "medical_research_harness.cli:main"
+
+[project.urls]
+Repository = "https://github.com/ClimbHillTmr/Helper_for_Assessing_Risk_of_Bias_PROBAST"
+Documentation = "https://github.com/ClimbHillTmr/Helper_for_Assessing_Risk_of_Bias_PROBAST/blob/main/skills/medical-research-harness/SKILL.md"
+Issues = "https://github.com/ClimbHillTmr/Helper_for_Assessing_Risk_of_Bias_PROBAST/issues"
+
+[tool.setuptools]
+include-package-data = true
+
+[tool.setuptools.packages.find]
+where = ["src"]
+include = ["medical_research_harness*"]

@@ -1,0 +1,25 @@
+{
+  "format_version": 1,
+  "questions": [
+    {
+      "id": "FIT_SCOPE",
+      "question": "Were preprocessing steps (imputation, encoding, scaling, feature selection, hyperparameter tuning, calibration) fitted on training folds only, with no information from test/validation data used to fit them? Report whether the article explicitly limits fitting to training folds or leaves it ambiguous whether test data could have leaked into preprocessing.",
+      "keywords": ["imputation", "imputed", "missing data", "encoding", "scaling", "normalization", "standardization", "feature selection", "variable selection", "dimensionality", "hyperparameter", "tuning", "grid search", "calibration", "training fold", "training set", "preprocessing", "fitted", "leakage"]
+    },
+    {
+      "id": "EVAL_ROLE",
+      "question": "Was the test or validation set used only for final evaluation, or was it also used for tuning, threshold selection, calibration, or model selection? Report any described reuse of held-out data for decisions other than the final reported performance.",
+      "keywords": ["test set", "validation set", "hold-out", "holdout", "threshold", "cut-off", "cutoff", "model selection", "best model", "hyperparameter", "tuning", "calibration", "final evaluation", "performance", "AUC", "Brier", "internal validation", "external validation"]
+    },
+    {
+      "id": "GROUP_SPLIT",
+      "question": "Are the same patients (or the same patient contributing repeated records) kept mutually exclusive across train/validation/test splits? Report whether the article states patient-level splitting, or instead splits records randomly in a way that could place the same patient on both sides — noting that temporal or site splits are not necessarily mutually exclusive by patient.",
+      "keywords": ["patient-level", "patient level", "same patient", "repeated", "readmission", "duplicate", "mutually exclusive", "random split", "randomly split", "randomly assigned", "split", "partition", "site", "center", "centre", "hospital", "temporal", "time period", "train", "test", "validation"]
+    },
+    {
+      "id": "FEATURE_TIME",
+      "question": "Are predictor/feature values those actually available at the stated prediction time, rather than measurements recorded at a different clinical period or after the prediction point? Report whether the article distinguishes the predictor availability time point from the outcome ascertainment window, or uses post-prediction information.",
+      "keywords": ["predictor", "feature", "variable", "measured at", "measurement", "baseline", "admission", "before", "prior to", "at the time", "available at", "prediction time", "postoperative", "discharge", "outcome", "follow-up", "ascertainment", "endpoint", "within", "days after", "retrospective"]
+    }
+  ]
+}

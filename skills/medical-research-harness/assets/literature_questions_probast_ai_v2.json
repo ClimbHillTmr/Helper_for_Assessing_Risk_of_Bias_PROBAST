@@ -1,0 +1,45 @@
+{
+  "format_version": 1,
+  "questions": [
+    {
+      "id": "FIT_SCOPE",
+      "question": "Were preprocessing steps (imputation, encoding, scaling, feature selection, hyperparameter tuning, calibration) fitted on training folds only, with no information from test/validation data used to fit them? Report whether the article explicitly limits fitting to training folds or leaves it ambiguous whether test data could have leaked into preprocessing.",
+      "keywords": ["imputation", "imputed", "missing data", "encoding", "scaling", "normalization", "standardization", "feature selection", "variable selection", "dimensionality", "hyperparameter", "tuning", "grid search", "calibration", "training fold", "training set", "preprocessing", "fitted", "leakage"]
+    },
+    {
+      "id": "EVAL_ROLE",
+      "question": "Was the test or validation set used only for final evaluation, or was it also used for tuning, threshold selection, calibration, or model selection? Report any described reuse of held-out data for decisions other than the final reported performance.",
+      "keywords": ["test set", "validation set", "hold-out", "holdout", "threshold", "cut-off", "cutoff", "model selection", "best model", "hyperparameter", "tuning", "calibration", "final evaluation", "performance", "AUC", "Brier", "internal validation", "external validation"]
+    },
+    {
+      "id": "GROUP_SPLIT",
+      "question": "Are the same patients (or the same patient contributing repeated records) kept mutually exclusive across train/validation/test splits? Report whether the article states patient-level splitting, or instead splits records randomly in a way that could place the same patient on both sides — noting that temporal or site splits are not necessarily mutually exclusive by patient.",
+      "keywords": ["patient-level", "patient level", "same patient", "repeated", "readmission", "duplicate", "mutually exclusive", "random split", "randomly split", "randomly assigned", "split", "partition", "site", "center", "centre", "hospital", "temporal", "time period", "train", "test", "validation"]
+    },
+    {
+      "id": "FEATURE_TIME",
+      "question": "Are predictor/feature values those actually available at the stated prediction time, rather than measurements recorded at a different clinical period or after the prediction point? Report whether the article distinguishes the predictor availability time point from the outcome ascertainment window, or uses post-prediction information.",
+      "keywords": ["predictor", "feature", "variable", "measured at", "measurement", "baseline", "admission", "before", "prior to", "at the time", "available at", "prediction time", "postoperative", "discharge", "outcome", "follow-up", "ascertainment", "endpoint", "within", "days after", "retrospective"]
+    },
+    {
+      "id": "OUTCOME_INCORPORATION",
+      "question": "Was the outcome determined without knowledge of predictor values or model predictions (avoiding incorporation bias), using a consistent definition and assessment method across all participants (PROBAST+AI Domain 3)? Report whether predictors were part of the outcome definition or whether clinicians/adjudicators had access to predictor/model information.",
+      "keywords": ["outcome", "endpoint", "adjudication", "blinded", "blinding", "without knowledge", "incorporation", "reference standard", "diagnostic criteria", "confirm", "consensus", "definition", "ascertained", "chart review", "ICD"]
+    },
+    {
+      "id": "CENSORING_COMPETING_RISK",
+      "question": "For prognostic or time-to-event prediction studies, were censoring, loss to follow-up, and competing events (e.g., death, transplant, modality transfer) appropriately accounted for rather than simply excluding censored or competing-event participants (PROBAST+AI Domain 4)? Report how follow-up completeness and competing risks were handled.",
+      "keywords": ["censoring", "censored", "loss to follow-up", "lost to follow-up", "competing risk", "competing event", "Fine-Gray", "cause-specific", "Kaplan-Meier", "Cox", "survival", "time-to-event", "excluded", "complete follow-up", "dropout"]
+    },
+    {
+      "id": "CALIBRATION_AND_UTILITY",
+      "question": "Did the study evaluate model calibration (calibration plot/curve, calibration slope, calibration-in-the-large/intercept, ICI, Brier score) in addition to discrimination, and report uncertainty intervals (PROBAST+AI Domain 4 & TRIPOD+AI)? Report which calibration and clinical utility (e.g., decision curve analysis) measures were assessed.",
+      "keywords": ["calibration", "calibration curve", "calibration plot", "calibration slope", "intercept", "calibration-in-the-large", "ICI", "Brier", "Hosmer-Lemeshow", "decision curve", "net benefit", "confidence interval", "bootstrap", "discrimination", "AUROC", "C-index"]
+    },
+    {
+      "id": "SUBGROUP_SHIFT_AND_UPDATING",
+      "question": "Did the evaluation report performance and calibration across relevant demographic or clinical subgroups/sites, and clearly distinguish zero-fit external validation from model updating or recalibration on target data (PROBAST+AI 2025 & FUTURE-AI)? Report whether target labels or covariates were used to update/recalibrate the model.",
+      "keywords": ["subgroup", "fairness", "sex", "age", "race", "ethnicity", "site", "center", "recalibration", "model updating", "transfer learning", "domain adaptation", "fine-tuning", "zero-shot", "external validation", "heterogeneity"]
+    }
+  ]
+}

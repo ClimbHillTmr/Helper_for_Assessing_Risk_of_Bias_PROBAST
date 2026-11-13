@@ -1,6 +1,6 @@
 # 参考文献与许可边界
 
-公开 Alpha 版本用文献引用及官方链接替代原先存放的第三方 PDF。本项目的 MIT 许可证适用于本项目代码与原创说明，不为第三方论文或官方量表重新授权。下载、使用与再分发这些材料时，应遵守各原始来源的条款。
+公开版本用文献引用及官方链接替代原先存放的第三方 PDF。本项目的 MIT 许可证适用于本项目代码与原创说明，不为第三方论文或官方量表重新授权。下载、使用与再分发这些材料时，应遵守各原始来源的条款。
 
 - Wolff RF et al. **PROBAST: A Tool to Assess the Risk of Bias and Applicability of Prediction Model Studies.** Ann Intern Med. 2019. [DOI: 10.7326/M18-1376](https://doi.org/10.7326/M18-1376)。
 - Moons KGM et al. **PROBAST+AI: an updated quality, risk of bias, and applicability assessment tool for prediction models using regression or artificial intelligence methods.** BMJ. 2025;388:e082505. [原文](https://www.bmj.com/content/388/bmj-2024-082505)。
@@ -10,3 +10,13 @@
 - 陈香萍、章仲恒，**PROBAST：诊断或预后预测模型研究偏倚风险的评估工具**。中国循证医学杂志，2020。[DOI: 10.7507/1672-2531.201910087](https://doi.org/10.7507/1672-2531.201910087)。
 
 旧的研究专用填写表不属于公开示例。当前版本及独立 skill 包不包含这些 PDF；历史提交保留其原有内容，本次发布不重写 Git 历史。
+
+## 短篇伴生软件论文（JOSS）
+
+本仓库的方法学开源工具包短篇伴生软件说明（Software Paper）及投稿就绪检查工具位于 [`Paper/joss/`](joss/)：
+
+- [`Paper/joss/paper.md`](joss/paper.md)：符合 *Journal of Open Source Software* (JOSS) 格式的纯软件工程底座说明稿（`<1,000` 词，含 `Summary`、`Statement of Need`、`State of the Field`、`Software Design`、`AI Usage Disclosure`、`Acknowledgements` 与 `References`）。
+- [`Paper/joss/paper.bib`](joss/paper.bib)：配套 BibTeX 参考文献库（全部 7 条正式发表文献均含经核验的精确 DOI，零未发表预印占位条目）。
+- [`Paper/joss/check_joss_ready.py`](joss/check_joss_ready.py)：纯 Python 3.10+ 标准库编写的 JOSS 投稿前一键自检与作者元数据原子回填脚本（校验 YAML 头、总词数 `[250, 1000]`、章节结构、300 DPI 配图尺寸、BibTeX DOI 完整性、仓库治理文件及 ISO 7064 Mod 11-2 ORCID 校验位）。
+- [`Paper/joss/SUBMISSION_CHECKLIST.md`](joss/SUBMISSION_CHECKLIST.md)：中英双语 JOSS 五步一键投稿操作清单（含单命令填写作者信息、GitHub `v0.2.0` 标签推送、Actions 绿标核验、可选 Zenodo 归档及 OpenJournals 提交步骤）。
+- [`Paper/joss/paper_preview.pdf`](joss/paper_preview.pdf)：基于 Pandoc + XeLaTeX 生成的本地排版与参考文献渲染预览 PDF。

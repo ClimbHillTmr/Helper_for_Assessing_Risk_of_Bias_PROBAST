@@ -1,0 +1,50 @@
+cff-version: 1.2.0
+title: "Medical Research Harness: An Auditable Methodology Toolkit for Bias Control and Reproducible Evidence Reconciliation in Clinical Prediction Research"
+message: "If you use Medical Research Harness in your research or methodological audits, please cite this software and the underlying methodological standards."
+type: software
+version: "0.2.0"
+license: MIT
+repository-code: "https://github.com/ClimbHillTmr/Helper_for_Assessing_Risk_of_Bias_PROBAST"
+authors:
+  - name: "Qi Guo"
+    orcid: "https://orcid.org/0000-0002-4069-9819"
+    affiliation: "College of Semiconductors (National Graduate College for Engineers), Southern University of Science and Technology, Shenzhen, China"
+keywords:
+  - clinical prediction models
+  - risk of bias
+  - PROBAST
+  - PROBAST+AI
+  - TRIPOD+AI
+  - data leakage audit
+  - reproducible research
+references:
+  - type: article
+    title: "PROBAST: A Tool to Assess the Risk of Bias and Applicability of Prediction Model Studies"
+    authors:
+      - family-names: Wolff
+        given-names: Robert F.
+      - family-names: Moons
+        given-names: Karel G. M.
+    journal: "Annals of Internal Medicine"
+    year: 2019
+    doi: "10.7326/M18-1376"
+  - type: article
+    title: "PROBAST+AI: an updated quality, risk of bias, and applicability assessment tool for prediction models using regression or artificial intelligence methods"
+    authors:
+      - family-names: Moons
+        given-names: Karel G. M.
+      - family-names: Damen
+        given-names: Johanna A. A.
+    journal: "BMJ"
+    year: 2025
+    doi: "10.1136/bmj-2024-082505"
+  - type: article
+    title: "TRIPOD+AI statement: updated guidance for reporting clinical prediction models that use regression or machine learning methods"
+    authors:
+      - family-names: Collins
+        given-names: Gary S.
+      - family-names: Moons
+        given-names: Karel G. M.
+    journal: "BMJ"
+    year: 2024
+    doi: "10.1136/bmj-2023-078378"

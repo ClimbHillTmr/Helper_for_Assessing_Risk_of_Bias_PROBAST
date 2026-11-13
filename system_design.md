@@ -1,6 +1,6 @@
 # Medical Research Harness：设计与范围
 
-版本：0.1.0-alpha。产品是 `skills/medical-research-harness/`，用于将研究问题和偏倚风险转成数据操作、可执行任务以及可复核结果。
+当前版本：0.2.0；早期分发版本：0.1.0-alpha。产品是 `skills/medical-research-harness/`，用于将研究问题和偏倚风险转成数据操作、可执行任务以及可复核结果。
 
 ## 工作顺序
 
@@ -18,6 +18,10 @@ flowchart LR
 
 数据准备与实验均遵守目标项目已有授权。plan 生成 DRAFT，不给予执行许可。计划成员表与实际 fit 日志分开；实际审计绑定具体任务和运行。队列与折身份进入任务指纹及协议锁，改变它们需按原研究流程修订。
 
+## 文献自动分析路径（开发中）
+
+文献与项目审计分开：合法全文清单 → 身份/许可核对 → 段落索引 → 四类工程问题检索 → 模型分析与独立上下文复核 → 逐字引用校验 → 带未解决项的报告。核心入口和适配器契约见 [literature-interface-v1.md](docs/literature-interface-v1.md)，实施与实测状态见 [行动计划](docs/action-plan-v1.md)。这一路径不创建研究批准，不执行患者数据检查，不给出正式 PROBAST 评级。Laya 是可选本地判断后端，未通过实测前不代替已验证调用链，也不阻塞全文入口。
+
 ## 最小实现
 
 | 职责 | 实现 |
@@ -25,9 +29,12 @@ flowchart LR
 | Agent 入口 | AGENTS.md 与 SKILL.md |
 | 科学指导 | workflow.md、methodology.md、protocol.md |
 | 执行接口 | operations.md 与 study.py |
+| 自动检查与交接 | automation.md 与 workflow.py；只编排检查，不执行 task.command |
+| 目标项目只读审计 | project-audit.md 与 project_audit.py；静态 AST 代码探查 + 清单/运行对账 + 沙箱门禁 |
+| 文献多层解析与设计抽取 | literature.md、literature.py、literature_offline.py、literature_design.py |
 | 文档完整性 | check_bundle.py |
 | 实验运行/审批 | 外部环境的现有工具，通过明确接口接入 |
-| 可复现软件验证 | test_study.py、test_check_bundle.py、tests/review_probes.py |
+| 可复现软件验证 | test_study.py、test_check_bundle.py、test_workflow.py、test_project_audit.py、test_literature.py、test_literature_design.py、tests/review_probes.py |
 
 核心脚本只依赖 Python 标准库。preflight 的外部校验器必须显式指定；不假设维护者的目录或服务存在。默认测试可在没有 ResearchLab 的环境运行。
 

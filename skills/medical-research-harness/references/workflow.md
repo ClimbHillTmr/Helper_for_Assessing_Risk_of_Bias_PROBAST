@@ -4,6 +4,12 @@
 
 执行本工作流时读取 [operations.md](operations.md)，使用 plan / audit / preflight / summarize 命令。`check_bundle.py` 只做文档一致性；`study.py` 执行其中有明确输入契约的数据检查与运行对账。
 
+自动串联检查见 [automation.md](automation.md)。`workflow.py` 将现有阶段检查整理为 BLOCKED、AWAITING_EXECUTION 或 AWAITING_SCIENTIFIC_REVIEW；阶段角色表保持不变，不增加自动批准或自动低风险判断。
+
+## 文献模式
+
+只有论文/补充材料时，按 [literature.md](literature.md) 走全文证据路径；不制造患者清单、拟合日志或审批来满足下面的研究执行阶段。文献报告仅为已获取材料范围的风险建议，缺失附件及未解决项必须显式记录。
+
 ## 1. design：研究设计与偏倚控制
 
 读目标研究已有证据后，用契约固定研究问题、估计目标/预测目标、目标人群、实际可核验入组标准、结局、时间锚点、允许信息、主指标与验证设计。列出无法从数据核验的条件；不能根据疾病名称推断活动期或时点。

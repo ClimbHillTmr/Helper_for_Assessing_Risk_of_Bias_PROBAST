@@ -1,7 +1,12 @@
 __pycache__/
 *.pyc
 /dist/
+*.egg-info/
+/src/*.egg-info/
 /build/
+/Paper/cmpb/
 /.venv/
 .env
 .env.*
+/C:
+/C:/

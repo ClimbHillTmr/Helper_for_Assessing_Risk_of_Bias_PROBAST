@@ -15,15 +15,48 @@ jobs:
     env:
       PYTHONDONTWRITEBYTECODE: '1'
     steps:
-      - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7
+      - uses: actions/checkout@v4
         with:
           persist-credentials: false
-      - uses: actions/setup-python@5fda3b95a4ea91299a34e894583c3862153e4b97 # v7
+      - uses: actions/setup-python@v5
         with:
           python-version: ${{ matrix.python }}
       - name: Document evidence checks
         run: python skills/medical-research-harness/scripts/test_check_bundle.py
       - name: Portable operational checks
         run: python skills/medical-research-harness/scripts/test_study.py
+      - name: Automated workflow checks
+        run: python skills/medical-research-harness/scripts/test_workflow.py
+      - name: Read-only project audit MVP checks
+        run: python skills/medical-research-harness/scripts/test_project_audit.py -v
+      - name: Semantic agent synthetic checks
+        run: python skills/medical-research-harness/scripts/test_decision_agent.py
+      - name: Hermes adapter offline checks (no Hermes installation)
+        env:
+          HERMES_ADAPTER_ROOT: /nonexistent
+          HERMES_ADAPTER_INTEGRATION: '0'
+        run: python skills/medical-research-harness/scripts/test_hermes_decision_adapter.py -v
+      - name: Laya sentence-anchored adapter offline checks
+        run: python skills/medical-research-harness/scripts/test_laya_decision_adapter.py -v
+      - name: Literature agent offline checks
+        run: |
+          python skills/medical-research-harness/scripts/test_literature.py
+          python skills/medical-research-harness/scripts/test_literature_design.py -v
+          python skills/medical-research-harness/scripts/test_literature_model_adapter.py
+          python tests/test_literature_boundaries.py
+          python skills/medical-research-harness/scripts/test_literature_recovery.py
+          python tests/test_literature_p2_repairs.py
+          python tests/test_literature_offline_resume.py
       - name: Independent-origin regression probes
         run: python tests/review_probes.py --out "${{ runner.temp }}/medical-harness-probes"
+      - name: Standalone wheel and CLI installation checks
+        run: |
+          python -m venv "${{ runner.temp }}/pkg-venv"
+          "${{ runner.temp }}/pkg-venv/bin/python" -c "import setuptools, wheel" 2>/dev/null || "${{ runner.temp }}/pkg-venv/bin/pip" install --quiet "setuptools>=61.0" wheel
+          "${{ runner.temp }}/pkg-venv/bin/pip" install --no-build-isolation --no-deps .
+          cd "${{ runner.temp }}"
+          "${{ runner.temp }}/pkg-venv/bin/medical-research-harness" --version
+          "${{ runner.temp }}/pkg-venv/bin/mrh" --help
+          "${{ runner.temp }}/pkg-venv/bin/medical-research-harness" selftest
+      - name: JOSS submission readiness checks
+        run: python Paper/joss/check_joss_ready.py --allow-placeholders

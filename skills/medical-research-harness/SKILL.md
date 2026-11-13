@@ -1,6 +1,7 @@
 ---
 name: medical-research-harness
-description: "指导医疗数据研究的数据处理、实验设计、偏倚控制与结果汇总。用于制定研究契约、审计患者和时间泄漏、设计验证与敏感性实验、按 PROBAST/PROBAST+AI 追踪临床预测研究证据。"
+description: "用于医疗研究设计、偏倚审计与结果对账；自动串联证据检查和审批交接."
+version: 0.2.0
 license: MIT
 ---
 
@@ -8,13 +9,26 @@ license: MIT
 
 把研究问题和偏倚风险转换成数据操作、可执行实验任务及可复核结果。按用户当前阶段推进；复用目标项目已有管线、协议和运行登记。首个完整方法学路径是临床预测研究。
 
-版本：0.1.0-alpha。Python 3.10+，核心脚本仅依赖标准库。plan/audit/summarize/check_bundle 可独立运行；preflight 需通过 `--lab` 指定受信任的外部校验器，接口见 [operations.md](references/operations.md)。本包不包含 ResearchLab 运行器。源码采用附带的 [MIT License](LICENSE)。
+版本：0.2.0。Python 3.10+，核心脚本仅依赖标准库。plan/audit/summarize/check_bundle 可独立运行；preflight 需通过 `--lab` 指定受信任的外部校验器，接口见 [operations.md](references/operations.md)。本包不包含 ResearchLab 运行器。源码采用附带的 [MIT License](LICENSE)。
 
 ## 先确定研究与证据
 
 1. 读取目标项目规则、研究目标、数据契约、活动协议、最新决定、代码和已有结果。区分计划、已执行证据和未解决问题。
 2. 分类研究目的：个体预测、因果/干预、描述或其他。预测研究读取 [methodology.md](references/methodology.md) 并锁定工具版本；其他类型先指定适用协议和评估工具，不能套用 PROBAST 评分。
 3. 读取 [workflow.md](references/workflow.md) 中当前阶段。没有契约时用 [protocol.md](assets/protocol.md) 创建草案；存在协议则引用并补齐定位，不另造相冲突的版本。
+
+## 按当前任务加载
+
+- 研究设计或协议缺失：读取 workflow.md 的 design 部分与 protocol.md；先明确科学决策。
+- 推进已有研究或重复检查：读取 [automation.md](references/automation.md)，优先使用 `workflow.py` 一次串联审计、文档检查及阶段交接。
+- 导出器、字段或执行证据不兼容：读取 operations.md 的精确契约；不改变研究问题来适配脚本。
+- 显式要求模型分层或证据语义核验：读取 [decision-agent.md](references/decision-agent.md)，以 shadow 模式运行可配置的 light→reasoner；不能用建议覆盖确定性门禁。
+- 目标项目只读审计：读取 [project-audit.md](references/project-audit.md)，使用 `project_audit.py --spec ... --out NEW_DIR` 在只读不可变校验下完成静态 AST 风险探查与确定性清单/运行对账；未提供外部 OS 沙箱运行器时生成脚本停在 `AWAITING_SANDBOX_RUNNER`。
+- 文献自动分析与研究设计抽取：读取 [literature.md](references/literature.md)，使用 `literature.py` 或多层扩展 `literature_design.py`（分离正文、表格、图注和已核验补充材料层，抽取 11 项结构化研究设计并做章节感知检索）；默认 dry-run，真实公开材料分析须显式启用模型和公开外发。不要要求用户预填主张，不将正文缺证据称执行违例。
+- 无模型续跑：使用 `literature_offline.py --manifest ... --config ... --out NEW_DIR --resume-from OLD_OUTPUT_DIR`；只恢复身份与哈希验证的 v2 检查点并继续未完成的离线准备。`--restore-only` 复制不是续跑。引用底本与等长遮蔽的证据视图分开保存。
+- 正式偏倚评估：读取 methodology.md 和完整官方工具；工程门禁不代答官方问题。
+
+使用宿主 agent 的 `terminal` 执行脚本、`read_file` 读取聚合报告。先核对 `completion.json` 及其产物哈希，再使用 `workflow.json` 的 next_actions 推进；blocked/error 必须处理，不能从旧 PASS 推断当前有效。不自动重试训练或重新生成批准。
 
 ## 将指导落实为操作
 
@@ -46,6 +60,12 @@ python3 <skill-directory>/scripts/check_bundle.py <study-directory>/evidence_bun
 `phase` 为 `design`、`preflight` 或 `results`。填好的文件以 `available` 加 SHA-256 和 locator 登记；尚未完成的标 `planned`/`missing`。必要角色缺失时检查失败；不适用需有理由文档，核心协议、审批和结果角色不能豁免。详见工作流的角色表。
 
 check_bundle.py 通过仅表示文件证据的一致性；实际清单检查与运行对账使用 study.py。两者都不自动赋予低风险或科学有效性。不要把文档完整性视为无泄漏。
+
+## 验证与限制
+
+修改本技能后运行 `test_check_bundle.py`、`test_study.py`、`test_workflow.py`、`test_project_audit.py`、`test_decision_agent.py`、`test_hermes_decision_adapter.py`、`test_laya_decision_adapter.py`、`test_literature.py`、`test_literature_design.py`、`test_literature_model_adapter.py` 与仓库 `tests/review_probes.py`，使用隔离合成材料，并进行新的只读代码复核。真实研究仍需实际数据审计与科学复核。自动化状态只能到待执行或待科学复核；不输出自动科学接受。Jev 的可选适用范围及验证要求见 automation.md；workflow.py 不调用外部模型，decision_agent.py 仅在显式启用且契约通过后调用可信适配器。
+
+修改索引/恢复还需运行 `test_literature_recovery.py`、`tests/test_literature_p2_repairs.py`、`tests/test_literature_offline_resume.py`。真实中断测试使用合成来源，实际发送 SIGTERM/SIGINT/SIGKILL；通过不代表模型分析或科学接受。
 
 ## 持续遵守的边界
 

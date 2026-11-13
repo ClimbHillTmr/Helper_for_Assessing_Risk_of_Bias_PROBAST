@@ -1,0 +1,19 @@
+{
+  "format_version": 1,
+  "question_version": "claim-evidence-shadow-v1",
+  "confidence_threshold": 0.8,
+  "max_requests": 8,
+  "timeout_seconds": 30,
+  "models": {
+    "light": {
+      "provider": "replace-with-provider",
+      "model": "replace-with-exact-light-model-version",
+      "command": ["/absolute/path/to/trusted-model-adapter", "--tier", "light"]
+    },
+    "reasoner": {
+      "provider": "replace-with-provider",
+      "model": "replace-with-exact-reasoner-model-version",
+      "command": ["/absolute/path/to/trusted-model-adapter", "--tier", "reasoner"]
+    }
+  }
+}
