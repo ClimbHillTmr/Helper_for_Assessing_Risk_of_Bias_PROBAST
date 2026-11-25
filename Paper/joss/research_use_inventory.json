@@ -1,0 +1,17 @@
+{
+  "checked_on": "2026-11-13",
+  "literature_pilot": {
+    "recorded_state": "PARTIAL",
+    "listed_artifacts": 4,
+    "matching_artifacts": 4,
+    "completion_sha256": "a71f7596ba51c97dbc7ac24fcd006b15389c38c4d118d299bc8fac921c317511",
+    "scope": "Listed file hashes only; no semantic or runtime-authenticity verification; original response bytes absent."
+  },
+  "medbias_reconciliation": {
+    "report_sha256": "837938751a6c1a44b5869a573610f756a00b3091929c62af2f63f54778d430e3",
+    "recorded_ok": true,
+    "scientific_validity": "not_assessed",
+    "fresh_executed_audit": false,
+    "referenced_project_audit_present": false
+  }
+}

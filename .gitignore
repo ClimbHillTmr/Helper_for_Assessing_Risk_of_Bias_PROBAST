@@ -5,6 +5,7 @@ __pycache__/
 /src/*.egg-info/
 /build/
 /Paper/cmpb/
+/Paper/track1/
 /.venv/
 .env
 .env.*

@@ -58,5 +58,10 @@ jobs:
           "${{ runner.temp }}/pkg-venv/bin/medical-research-harness" --version
           "${{ runner.temp }}/pkg-venv/bin/mrh" --help
           "${{ runner.temp }}/pkg-venv/bin/medical-research-harness" selftest
-      - name: JOSS submission readiness checks
-        run: python Paper/joss/check_joss_ready.py --allow-placeholders
+      - name: JOSS structural checks (not submission approval)
+        run: python Paper/joss/check_joss_ready.py --structural-only
+
+      - name: JOSS checker regression tests
+        run: |
+          python tests/test_joss_readiness.py
+          python tests/test_record_research_use.py

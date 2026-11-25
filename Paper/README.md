@@ -15,8 +15,8 @@
 
 本仓库的方法学开源工具包短篇伴生软件说明（Software Paper）及投稿就绪检查工具位于 [`Paper/joss/`](joss/)：
 
-- [`Paper/joss/paper.md`](joss/paper.md)：符合 *Journal of Open Source Software* (JOSS) 格式的纯软件工程底座说明稿（`<1,000` 词，含 `Summary`、`Statement of Need`、`State of the Field`、`Software Design`、`AI Usage Disclosure`、`Acknowledgements` 与 `References`）。
-- [`Paper/joss/paper.bib`](joss/paper.bib)：配套 BibTeX 参考文献库（全部 7 条正式发表文献均含经核验的精确 DOI，零未发表预印占位条目）。
-- [`Paper/joss/check_joss_ready.py`](joss/check_joss_ready.py)：纯 Python 3.10+ 标准库编写的 JOSS 投稿前一键自检与作者元数据原子回填脚本（校验 YAML 头、总词数 `[250, 1000]`、章节结构、300 DPI 配图尺寸、BibTeX DOI 完整性、仓库治理文件及 ISO 7064 Mod 11-2 ORCID 校验位）。
-- [`Paper/joss/SUBMISSION_CHECKLIST.md`](joss/SUBMISSION_CHECKLIST.md)：中英双语 JOSS 五步一键投稿操作清单（含单命令填写作者信息、GitHub `v0.2.0` 标签推送、Actions 绿标核验、可选 Zenodo 归档及 OpenJournals 提交步骤）。
+- [`Paper/joss/paper.md`](joss/paper.md)：符合 *Journal of Open Source Software* (JOSS) 格式的纯软件工程底座说明稿（`750–1750` 词，含 `Summary`、`Statement of Need`、`State of the Field`、`Software Design`、`Research Impact Statement`、`AI Usage Disclosure`、`Acknowledgements` 与 `References`）。
+- [`Paper/joss/paper.bib`](joss/paper.bib)：配套 BibTeX 参考文献库（7 条文献均含 DOI；脚本仅检查 DOI 语法，零未发表预印占位条目）。
+- [`Paper/joss/check_joss_ready.py`](joss/check_joss_ready.py)：纯 Python 3.10+ 标准库编写的 JOSS 投稿前一键自检与作者元数据原子回填脚本（校验 YAML 头、正文词数 `[750, 1750]`、章节结构、PNG 配图像素尺寸、BibTeX DOI 完整性、仓库治理文件及 ISO 7064 Mod 11-2 ORCID 校验位）。
+- [`Paper/joss/SUBMISSION_CHECKLIST.md`](joss/SUBMISSION_CHECKLIST.md)：分阶段补充计划、验收条件、研究证据与作者待确认事项；开发历史和编辑资格不能由 CI 绿标替代。
 - [`Paper/joss/paper_preview.pdf`](joss/paper_preview.pdf)：基于 Pandoc + XeLaTeX 生成的本地排版与参考文献渲染预览 PDF。

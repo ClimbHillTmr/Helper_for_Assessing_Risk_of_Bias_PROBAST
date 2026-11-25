@@ -84,7 +84,7 @@ def build_figure() -> None:
         {
             "num": "STAGE 2",
             "subtag": "COHORT & FITS",
-            "title": "14-Invariant\nManifest Audit",
+            "title": "Deterministic\nManifest Audit",
             "color": SLATE_BLUE,
             "tint": BLUE_TINT,
             "cli": "study.py audit\n--mode planned | executed",
@@ -117,7 +117,7 @@ def build_figure() -> None:
             "bullets": [
                 "• Recomputes executed audits\n  freshly from source manifests",
                 "• Preserves FAILED, ABORTED,\n  RUNNING, and NOT_RUN runs",
-                "• Enforces execution_authorized:\n  false, scientific_acceptance: false",
+                "• Withholds execution approval\n  and scientific acceptance",
             ],
         },
     ]
@@ -300,7 +300,7 @@ def build_figure() -> None:
         4.0,
         0.285,
         "Pure Python 3.10+ Standard Library Only (ast, csv, hashlib, json, re, xml.parsers.expat, zipfile)\n"
-        "Local Aggregate Manifests Only (no raw patient rows, embeddings, or credentials)   •   "
+        "Local Row-Level Metadata Inputs; Aggregate Audit Diagnostics   •   "
         "Atomic completion.json SHA-256 Artifact Binding",
         ha="center",
         va="center",

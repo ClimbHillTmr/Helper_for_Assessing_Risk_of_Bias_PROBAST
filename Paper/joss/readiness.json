@@ -1,0 +1,32 @@
+{
+  "public_development": {
+    "status": "pending",
+    "evidence": "Current software introduced 2026-10-02; sustain public iteration beyond six months; repository age alone is insufficient.",
+    "reviewed_by": null,
+    "reviewed_at": null
+  },
+  "research_use": {
+    "status": "pending",
+    "evidence": "RESEARCH_USE_EVIDENCE.md: historical records only; current research-use chain needs review.",
+    "reviewed_by": null,
+    "reviewed_at": null
+  },
+  "author_disclosure": {
+    "status": "pending",
+    "evidence": "Confirm tools/versions, human validation, funding and conflicts.",
+    "reviewed_by": null,
+    "reviewed_at": null
+  },
+  "official_pdf": {
+    "status": "pending",
+    "evidence": "Local preview only. Official Inara compilation not verified.",
+    "reviewed_by": null,
+    "reviewed_at": null
+  },
+  "release": {
+    "status": "pending",
+    "evidence": "v0.2.0 tag exists; revised release and archival DOI remain outstanding.",
+    "reviewed_by": null,
+    "reviewed_at": null
+  }
+}

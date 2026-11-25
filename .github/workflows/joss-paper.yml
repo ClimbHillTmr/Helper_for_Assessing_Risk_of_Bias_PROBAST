@@ -1,0 +1,28 @@
+name: JOSS draft PDF
+on:
+  workflow_dispatch:
+  push:
+    paths:
+      - 'Paper/joss/paper.md'
+      - 'Paper/joss/paper.bib'
+      - 'Paper/joss/figures/**'
+      - '.github/workflows/joss-paper.yml'
+permissions:
+  contents: read
+jobs:
+  paper:
+    runs-on: ubuntu-latest
+    timeout-minutes: 15
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          persist-credentials: false
+      - uses: openjournals/openjournals-draft-action@master
+        with:
+          journal: joss
+          paper-path: Paper/joss/paper.md
+      - uses: actions/upload-artifact@v4
+        with:
+          name: joss-paper
+          path: Paper/joss/paper.pdf
+          if-no-files-found: error

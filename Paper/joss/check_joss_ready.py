@@ -11,6 +11,7 @@ import sys
 sys.dont_write_bytecode = True
 
 import argparse
+import json
 import os
 from pathlib import Path
 import re
@@ -29,6 +30,7 @@ REQUIRED_HEADINGS = [
     "# Statement of Need",
     "# State of the Field",
     "# Software Design",
+    "# Research Impact Statement",
     "# AI Usage Disclosure",
     "# Acknowledgements",
     "# References",
@@ -441,17 +443,17 @@ def run_checks(
     except Exception as exc:
         failed.append(f"[1/8] YAML frontmatter parse error: {exc}")
 
-    # Check 2: Word count within [250, 1000]
+    # Check 2: Word count within [750, 1750]
     total_words = len(paper_text.split())
     body_words = len(body_text.split()) if body_text else 0
-    if 250 <= total_words <= 1000 and 250 <= body_words <= 1000:
+    if 750 <= body_words <= 1750:
         passed.append(
-            f"[2/8] Word count within JOSS [250, 1000] bounds: "
+            f"[2/8] Word count within JOSS [750, 1750] bounds: "
             f"total={total_words} words, body={body_words} words"
         )
     else:
         failed.append(
-            f"[2/8] Word count out of [250, 1000] bounds: "
+            f"[2/8] Word count out of [750, 1750] body-word bounds: "
             f"total={total_words} words, body={body_words} words"
         )
 
@@ -527,7 +529,7 @@ def run_checks(
         else:
             passed.append(
                 f"[5/8] Bibliography verified ({len(bib_entries)}/{len(bib_entries)} cited, "
-                f"100% valid DOIs, 0 @unpublished)"
+                f"100% syntactically valid DOIs, 0 @unpublished)"
             )
     except Exception as exc:
         failed.append(f"[5/8] BibTeX parse error: {exc}")
@@ -661,7 +663,7 @@ def run_checks(
         )
     else:
         passed.append(
-            "[8/8] Real author metadata & ISO 7064 Mod 11-2 ORCID checksum verified"
+            "[8/8] Non-placeholder author metadata & ISO 7064 Mod 11-2 ORCID checksum verified"
         )
 
     return passed, failed
@@ -705,6 +707,7 @@ def build_parser() -> argparse.ArgumentParser:
         action="store_true",
         help="Skip strict 0.2.0 version check in pyproject.toml/CITATION.cff prior to packaging branch merge",
     )
+    parser.add_argument("--structural-only", action="store_true", help="Check manuscript structure only; does not certify submission readiness")
     return parser
 
 
@@ -748,7 +751,27 @@ def main(argv: list[str] | None = None) -> int:
         print(f"\nRESULT: FAILED ({len(failed)} failed, {len(passed)} passed)")
         return 1
 
-    print(f"\nRESULT: ALL {len(passed)} JOSS READINESS CHECKS PASSED")
+    print(f"\nRESULT: {len(passed)} LOCAL STRUCTURAL CHECKS PASSED; not editorial approval")
+    if args.structural_only:
+        print("Submission evidence gates not evaluated (--structural-only).")
+        return 0
+    try:
+        gates = json.loads((repo_root / "Paper/joss/readiness.json").read_text())
+        required = {"public_development", "research_use", "author_disclosure", "official_pdf", "release"}
+        if set(gates) != required:
+            raise ValueError("readiness register has missing or unknown gates")
+        unresolved = []
+        for name, gate in gates.items():
+            if (gate.get("status") != "verified" or not gate.get("evidence")
+                    or not gate.get("reviewed_by") or not gate.get("reviewed_at")):
+                unresolved.append(name)
+        if unresolved:
+            print("SUBMISSION BLOCKED: " + ", ".join(sorted(unresolved)))
+            return 1
+    except (OSError, ValueError, TypeError, AttributeError) as error:
+        print("SUBMISSION BLOCKED: invalid evidence register: " + str(error))
+        return 1
+    print("Recorded evidence gates complete; editor eligibility and human review still required.")
     return 0
 
 

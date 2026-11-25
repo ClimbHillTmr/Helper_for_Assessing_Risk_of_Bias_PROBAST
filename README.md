@@ -18,8 +18,8 @@ Systematic reviews under **PROBAST** and **PROBAST+AI** consistently find that c
 
 ### Non-Bypassable Privacy & Epistemic Boundaries
 
-1. **Zero Patient-Row or Prediction Exposure**: Core deterministic checks operate strictly on local aggregate metadata manifests (`rows.csv`, `folds.csv`, `fits.csv`) and SHA-256 file digests. The toolkit never ingests raw patient feature tables, row-level predictions, clinical embeddings, or credentials.
-2. **Non-Bypassable Human-in-the-Loop Gates**: Every reconciliation and workflow artifact explicitly stamps `execution_authorized: false` and `scientific_acceptance: false`. Passing software hygiene invariants proves deterministic manifest/file consistency—it **never** grants clinical validity, low overall PROBAST risk of bias, or scientific approval.
+1. **Local Metadata and Aggregate Diagnostics**: Core deterministic checks operate strictly on local row-level metadata manifests (`rows.csv`, `folds.csv`, `fits.csv`) and SHA-256 file digests. The toolkit never ingests raw patient feature tables, row-level predictions, clinical embeddings, or credentials.
+2. **Non-Bypassable Human-in-the-Loop Gates**: Reconciliation withholds execution authorization and reports `scientific_validity: not_assessed`; workflow artifacts also withhold scientific acceptance. Passing software hygiene invariants proves deterministic manifest/file consistency—it **never** grants clinical validity, low overall PROBAST risk of bias, or scientific approval.
 3. **Zero Model Training or Clinical Serving**: This package is a methodological provenance and audit harness, not an AutoML trainer, clinical decision-support system, or automated data cleaner.
 
 ---
@@ -36,7 +36,7 @@ cd Helper_for_Assessing_Risk_of_Bias_PROBAST
 python3 -m pip install .
 ```
 
-Installing registers both `medical-research-harness` and the short alias `mrh`, exposing six subcommands:
+Installing registers both `medical-research-harness` and the short alias `mrh`, including the following core subcommands:
 `study`, `workflow`, `check-bundle`, `project-audit`, `literature`, and `selftest`.
 
 ### Option B — Zero-Install Direct Repository Execution
@@ -65,7 +65,7 @@ python3 "${CODEX_HOME:-$HOME/.codex}/skills/.system/skill-installer/scripts/inst
 
 ### 3.1 Self-Contained End-to-End Demo (`selftest`)
 
-Run a complete synthetic clinical prediction study lifecycle—protocol compilation, 14-invariant manifest fault injection, `planned` vs. `executed` fit auditing, and multi-run registry reconciliation—into a fresh directory (`--out` must not already exist):
+Run a complete synthetic clinical prediction study lifecycle—protocol compilation, deterministic manifest fault injection, `planned` vs. `executed` fit auditing, and multi-run registry reconciliation—into a fresh directory (`--out` must not already exist):
 
 ```bash
 # Installed CLI (or short alias: mrh selftest --out build/demo)
@@ -86,7 +86,7 @@ Inspect the generated artifacts in `build/demo/`:
 # 1. Governance & Evidence Bundle Verification (design | preflight | results)
 medical-research-harness check-bundle path/to/evidence_bundle.json
 
-# 2. Study Task Compilation, 14-Invariant Manifest Audit & Run Reconciliation
+# 2. Study Task Compilation, Deterministic Manifest Audit & Run Reconciliation
 medical-research-harness study plan --out build/plan-v1 path/to/study.json
 
 medical-research-harness study audit \
@@ -138,7 +138,7 @@ medical-research-harness literature \
 
 ## 4. Automated Verification Suite
 
-Continuous integration runs automatically on GitHub Actions ([`.github/workflows/validate.yml`](.github/workflows/validate.yml)) across Python 3.10 and Python 3.13 with `PYTHONDONTWRITEBYTECODE=1` and zero network calls.
+Continuous integration runs automatically on GitHub Actions ([`.github/workflows/validate.yml`](.github/workflows/validate.yml)) across Python 3.10 and Python 3.13 with `PYTHONDONTWRITEBYTECODE=1`. The synthetic checks make no model calls; CI setup may download build dependencies.
 
 Run the offline verification suite locally from the repository root:
 
@@ -173,13 +173,13 @@ python3 tests/review_probes.py --out build/review-probes
 | Resource | Purpose |
 |---|---|
 | [`skills/medical-research-harness/SKILL.md`](skills/medical-research-harness/SKILL.md) | Skill entrypoint, phase routing, and operational boundaries |
-| [`skills/medical-research-harness/references/operations.md`](skills/medical-research-harness/references/operations.md) | Exact CSV/JSON manifest schemas (`rows.csv`, `folds.csv`, `fits.csv`) and 14 audit rules |
+| [`skills/medical-research-harness/references/operations.md`](skills/medical-research-harness/references/operations.md) | Exact CSV/JSON manifest schemas (`rows.csv`, `folds.csv`, `fits.csv`) and audit rules |
 | [`skills/medical-research-harness/references/automation.md`](skills/medical-research-harness/references/automation.md) | Cross-phase `workflow` state machine and `completion.json` digest contracts |
 | [`skills/medical-research-harness/references/project-audit.md`](skills/medical-research-harness/references/project-audit.md) | Read-only target project AST/regex audit specification and sandbox gate |
 | [`skills/medical-research-harness/references/literature.md`](skills/medical-research-harness/references/literature.md) | JATS XML Expat security guards, coordinate masking, and `S001..S008` span verification |
 | [`skills/medical-research-harness/references/methodology.md`](skills/medical-research-harness/references/methodology.md) | PROBAST / PROBAST+AI / TRIPOD+AI alignment and applicability notes |
 | [`system_design.md`](system_design.md) | Architecture rationale and scope boundaries |
-| [`Paper/joss/paper.md`](Paper/joss/paper.md) | Companion *Journal of Open Source Software* (JOSS) manuscript (`<1,000` words) |
+| [`Paper/joss/paper.md`](Paper/joss/paper.md) | Companion *Journal of Open Source Software* (JOSS) manuscript (`750–1750` words) |
 | [`Paper/README.md`](Paper/README.md) | Methodological references, license boundaries, and companion manuscripts |
 
 - **Contributing & Issue Reporting**: See [`CONTRIBUTING.md`](CONTRIBUTING.md) for coding guidelines, privacy redlines, offline test requirements, and bug-report templates.

@@ -165,7 +165,12 @@ class AdapterTests(unittest.TestCase):
             pid = int(pidfile.read_text())
             for _ in range(100):
                 stat = Path(f'/proc/{pid}/stat')
-                if not stat.exists() or stat.read_text().split()[2] == 'Z':
+                try:
+                    state = stat.read_text().split()[2]
+                except (FileNotFoundError, ProcessLookupError):
+                    # The child can disappear between lookup and read.
+                    break
+                if state == 'Z':
                     break
                 adapter.time.sleep(0.01)
             else:

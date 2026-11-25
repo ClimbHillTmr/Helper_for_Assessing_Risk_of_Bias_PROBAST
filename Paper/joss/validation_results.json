@@ -1,0 +1,74 @@
+{
+  "date": "2026-11-13",
+  "scope": "Offline synthetic software checks only; no research experiments",
+  "tests": [
+    {
+      "test": "skills/medical-research-harness/scripts/test_check_bundle.py",
+      "exit_code": 0
+    },
+    {
+      "test": "skills/medical-research-harness/scripts/test_decision_agent.py",
+      "exit_code": 0
+    },
+    {
+      "test": "skills/medical-research-harness/scripts/test_hermes_decision_adapter.py",
+      "exit_code": 0
+    },
+    {
+      "test": "skills/medical-research-harness/scripts/test_laya_decision_adapter.py",
+      "exit_code": 0
+    },
+    {
+      "test": "skills/medical-research-harness/scripts/test_literature.py",
+      "exit_code": 0
+    },
+    {
+      "test": "skills/medical-research-harness/scripts/test_literature_design.py",
+      "exit_code": 0
+    },
+    {
+      "test": "skills/medical-research-harness/scripts/test_literature_model_adapter.py",
+      "exit_code": 0
+    },
+    {
+      "test": "skills/medical-research-harness/scripts/test_literature_real_snapshots.py",
+      "exit_code": 0
+    },
+    {
+      "test": "skills/medical-research-harness/scripts/test_literature_recovery.py",
+      "exit_code": 0
+    },
+    {
+      "test": "skills/medical-research-harness/scripts/test_project_audit.py",
+      "exit_code": 0
+    },
+    {
+      "test": "skills/medical-research-harness/scripts/test_study.py",
+      "exit_code": 0
+    },
+    {
+      "test": "skills/medical-research-harness/scripts/test_workflow.py",
+      "exit_code": 0
+    },
+    {
+      "test": "tests/test_joss_readiness.py",
+      "exit_code": 0
+    },
+    {
+      "test": "tests/test_literature_boundaries.py",
+      "exit_code": 0
+    },
+    {
+      "test": "tests/test_literature_offline_resume.py",
+      "exit_code": 0
+    },
+    {
+      "test": "tests/test_literature_p2_repairs.py",
+      "exit_code": 0
+    },
+    {
+      "test": "tests/review_probes.py",
+      "exit_code": 0
+    }
+  ]
+}
