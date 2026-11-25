@@ -1,5 +1,5 @@
 cff-version: 1.2.0
-title: "Medical Research Harness: An Auditable Methodology Toolkit for Bias Control and Reproducible Evidence Reconciliation in Clinical Prediction Research"
+title: "Medical Research Harness: A Python Toolkit for Provenance and Leakage Auditing in Clinical Prediction Studies"
 message: "If you use Medical Research Harness in your research or methodological audits, please cite this software and the underlying methodological standards."
 type: software
 version: "0.2.0"

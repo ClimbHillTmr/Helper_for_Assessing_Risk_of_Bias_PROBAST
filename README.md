@@ -1,5 +1,8 @@
 # Medical Research Harness
 
+[![Validate skill](https://github.com/ClimbHillTmr/Helper_for_Assessing_Risk_of_Bias_PROBAST/actions/workflows/validate.yml/badge.svg)](https://github.com/ClimbHillTmr/Helper_for_Assessing_Risk_of_Bias_PROBAST/actions/workflows/validate.yml)
+[![JOSS draft PDF](https://github.com/ClimbHillTmr/Helper_for_Assessing_Risk_of_Bias_PROBAST/actions/workflows/joss-paper.yml/badge.svg)](https://github.com/ClimbHillTmr/Helper_for_Assessing_Risk_of_Bias_PROBAST/actions/workflows/joss-paper.yml)
+
 **Version:** `v0.2.0` | **Runtime:** Python 3.10+ Standard Library Only (`dependencies = []`) | **License:** [MIT](LICENSE)
 
 **Medical Research Harness** (`medical-research-harness`) is an open-source, zero-dependency Python 3.10+ command-line toolkit and coding-agent skill for **protocol locking, deterministic cohort/fold manifest auditing, planned-vs.-executed fit reconciliation, read-only multi-language static code inspection, and coordinate-locked JATS XML evidence indexing** in clinical prediction research.
@@ -36,12 +39,12 @@ cd Helper_for_Assessing_Risk_of_Bias_PROBAST
 python3 -m pip install .
 ```
 
-Installing registers both `medical-research-harness` and the short alias `mrh`, including the following core subcommands:
-`study`, `workflow`, `check-bundle`, `project-audit`, `literature`, and `selftest`.
+Installing registers both `medical-research-harness` and the short alias `mrh`, exposing all 10 CLI subcommands:
+`study`, `workflow`, `check-bundle`, `project-audit`, `literature`, `literature-design`, `literature-offline`, `decision-agent`, `selftest`, and `skill-path`.
 
 ### Option B — Zero-Install Direct Repository Execution
 
-Every module can also be executed directly from a repository checkout without installing a Python package:
+Every module can also be executed directly from a repository checkout without installing a Python package (omit `--branch v0.2.0` to track latest `main`):
 
 ```bash
 git clone --branch v0.2.0 --depth 1 https://github.com/ClimbHillTmr/Helper_for_Assessing_Risk_of_Bias_PROBAST.git
@@ -51,7 +54,7 @@ python3 skills/medical-research-harness/scripts/study.py --help
 
 ### Option C — Coding Agent Skill (`SKILL.md`)
 
-To install `skills/medical-research-harness/` as an Agent Skill (e.g., in Codex or compatible agent harnesses):
+To install `skills/medical-research-harness/` as an Agent Skill (e.g., in Codex or compatible agent harnesses; use `--ref main` for the latest development tree or `--ref v0.2.0` for the tagged release):
 
 ```bash
 python3 "${CODEX_HOME:-$HOME/.codex}/skills/.system/skill-installer/scripts/install-skill-from-github.py" \
@@ -78,7 +81,7 @@ python3 skills/medical-research-harness/scripts/test_study.py --out build/demo
 Inspect the generated artifacts in `build/demo/`:
 - `checks.json`: pass/fail ledger across 24 deterministic operational invariants.
 - `audit-violations.json`: structured diagnostic counts for injected patient overlap, temporal lookahead, and out-of-fold fit violations.
-- `summary-final/summary.md` & `summary-final/summary.json`: complete run reconciliation preserving `SUCCEEDED`, `FAILED`, `ABORTED`, and `NOT_RUN` tasks alongside `scientific_acceptance: false`.
+- `summary-final/summary.md` & `summary-final/summary.json`: complete run reconciliation preserving `SUCCEEDED`, `FAILED`, `ABORTED`, and `NOT_RUN` tasks while withholding execution authorization and reporting `scientific_validity: not_assessed` (`workflow` artifacts additionally stamp `scientific_acceptance: false`).
 
 ### 3.2 Core Subcommand Reference
 
@@ -157,10 +160,13 @@ python3 skills/medical-research-harness/scripts/test_laya_decision_adapter.py -v
 python3 skills/medical-research-harness/scripts/test_literature.py
 python3 skills/medical-research-harness/scripts/test_literature_design.py -v
 python3 skills/medical-research-harness/scripts/test_literature_model_adapter.py
+python3 skills/medical-research-harness/scripts/test_literature_real_snapshots.py
 python3 skills/medical-research-harness/scripts/test_literature_recovery.py
 python3 tests/test_literature_boundaries.py
 python3 tests/test_literature_p2_repairs.py
 python3 tests/test_literature_offline_resume.py
+python3 tests/test_joss_readiness.py
+python3 tests/test_record_research_use.py
 
 # 76 independent-origin adversarial & tamper-rejection regression probes
 python3 tests/review_probes.py --out build/review-probes
@@ -178,9 +184,11 @@ python3 tests/review_probes.py --out build/review-probes
 | [`skills/medical-research-harness/references/project-audit.md`](skills/medical-research-harness/references/project-audit.md) | Read-only target project AST/regex audit specification and sandbox gate |
 | [`skills/medical-research-harness/references/literature.md`](skills/medical-research-harness/references/literature.md) | JATS XML Expat security guards, coordinate masking, and `S001..S008` span verification |
 | [`skills/medical-research-harness/references/methodology.md`](skills/medical-research-harness/references/methodology.md) | PROBAST / PROBAST+AI / TRIPOD+AI alignment and applicability notes |
+| [`docs/real-study-integration-guide.md`](docs/real-study-integration-guide.md) | Privacy-safe procedure for auditing authorized clinical studies and packaging aggregate evidence |
 | [`system_design.md`](system_design.md) | Architecture rationale and scope boundaries |
-| [`Paper/joss/paper.md`](Paper/joss/paper.md) | Companion *Journal of Open Source Software* (JOSS) manuscript (`750–1750` words) |
-| [`Paper/README.md`](Paper/README.md) | Methodological references, license boundaries, and companion manuscripts |
+| [`Paper/joss/paper.md`](Paper/joss/paper.md) | Draft *Journal of Open Source Software* (JOSS) manuscript (`750–1750` body words) |
+| [`Paper/joss/RESEARCH_USE_EVIDENCE.md`](Paper/joss/RESEARCH_USE_EVIDENCE.md) | Register separating historical usage records, synthetic regression tests, and remaining evidence |
+| [`Paper/README.md`](Paper/README.md) | Methodological references, license boundaries, and JOSS software paper index |
 
 - **Contributing & Issue Reporting**: See [`CONTRIBUTING.md`](CONTRIBUTING.md) for coding guidelines, privacy redlines, offline test requirements, and bug-report templates.
 - **Citation**: Metadata is provided in [`CITATION.cff`](CITATION.cff) (and `Paper/joss/paper.bib`). Please also cite the underlying PROBAST, PROBAST+AI, and TRIPOD+AI methodological statements when appraising clinical prediction studies.
@@ -192,7 +200,7 @@ python3 tests/review_probes.py --out build/review-probes
 
 **当前版本：`v0.2.0`。** 面向临床预测模型研究设计、队列/折清单确定性审计、运行登记对账与逐字引文文献风险筛查的零第三方依赖 Python 工具包与 Agent Skill。
 
-指导医疗数据研究的数据处理、实验设计、偏倚控制和结果汇总。当前可执行路径支持患者互斥、固定外层切分及完整内部折的预测研究。它不提供训练平台或临床服务，软件检查通过不等于低偏倚、科学批准或临床有效（所有输出强制标记 `execution_authorized: false` 与 `scientific_acceptance: false`）。
+指导医疗数据研究的数据处理、实验设计、偏倚控制和结果汇总。当前可执行路径支持患者互斥、固定外层切分及完整内部折的预测研究。它不提供训练平台或临床服务，软件检查通过不等于低偏倚、科学批准或临床有效（对账报告保留执行未授权并标明 `scientific_validity: not_assessed`，`workflow` 产物同时强制标记 `execution_authorized: false` 与 `scientific_acceptance: false`）。
 
 ### 安装 CLI 工具包或 Skill
 
@@ -206,7 +214,7 @@ cd Helper_for_Assessing_Risk_of_Bias_PROBAST
 python3 -m pip install .
 ```
 
-安装后可直接调用 `medical-research-harness`（或简写别名 `mrh`），支持 `study`、`workflow`、`check-bundle`、`project-audit`、`literature` 与 `selftest` 六个子命令。
+安装后可直接调用 `medical-research-harness`（或简写别名 `mrh`），支持全部 10 个子命令：`study`、`workflow`、`check-bundle`、`project-audit`、`literature`、`literature-design`、`literature-offline`、`decision-agent`、`selftest` 与 `skill-path`。
 
 #### 2. 安装 Agent Skill
 
@@ -265,7 +273,7 @@ python3 skills/medical-research-harness/scripts/workflow.py \
   --out /study/check-003
 ```
 
-借鉴 Jev 的结构化判断与分层核验思路，程序处理确定性约束，agent 处理语义和实现修复，科学接受保留独立复核。当前没有 Jev API 集成或其医疗领域效果证据。接口、状态和可选扩展见 [自动化说明](skills/medical-research-harness/references/automation.md)。
+编排层遵循“确定性程序把关 + 语义分层核验 + 独立科学复核”的职责分离原则：程序负责所有确定性约束，可选语义适配器只输出 shadow 建议且不可覆盖确定性门禁。接口、状态和可选扩展见 [自动化说明](skills/medical-research-harness/references/automation.md)。
 
 ### 文献索引与目标项目只读审计入口
 
@@ -288,13 +296,14 @@ python3 skills/medical-research-harness/scripts/test_project_audit.py -v
 |---|---|---|
 | `workflow` / `workflow.py` | 自动串联阶段检查、保留诊断与交接；不执行实验 | 本包；preflight 显式提供外部校验器 |
 | `project-audit` / `project_audit.py` | 目标项目只读审计：静态 AST 探查、清单/登记对账与四分类报告 | 本包；执行生成脚本需显式 `--sandbox-runner` |
-| `literature` / `literature.py` / `literature_design.py` | 公开 JATS 多层索引、11 项研究设计抽取、逐字引文校验与盲复核 | 本包；真实模型调用需显式 `--execute-models --allow-public-egress` |
+| `literature` / `literature-design` / `literature-offline` | 公开 JATS 多层索引、11 项研究设计抽取、逐字引文校验、盲复核与断点续跑 | 本包；真实模型调用需显式 `--execute-models --allow-public-egress` |
+| `decision-agent` / `decision_agent.py` | 对确定性门禁产物执行可选 shadow 语义核验（不覆盖硬门禁） | 本包；显式启用时需可信模型适配器 |
 | `study plan` | 生成任务、固定完整实验集合及协议/队列/折身份 | 本包与研究配置 |
 | `study audit` | 计算患者重叠、时间/标签违例、拟合越界及身份变化 | 本包与私有元数据清单 |
 | `study summarize` | 对账全部尝试，保留失败、中断和未执行项 | 本包与约定格式的运行记录 |
 | `check-bundle` / `check_bundle.py` | 检查文档证据及哈希 | 本包 |
 | `study preflight` | 审计身份检查及已有审批/锁校验 | 显式 `--lab` 外部校验器 |
-| `selftest` | 运行隔离合成端到端自检与故障注入校验 | 本包（纯标准库） |
+| `selftest` / `skill-path` | 运行隔离合成端到端自检，或输出已安装的 skill 目录路径 | 本包（纯标准库） |
 
 ResearchLab 不随本包分发。preflight 通过 `python <lab.py> validate-task <task.json>` 调用受信任的兼容校验器；没有该工具时，plan/audit/summarize 仍可独立使用，但不得声称已完成外部审批校验。完整接口与工作顺序见 [操作说明](skills/medical-research-harness/references/operations.md)。
 
@@ -316,7 +325,8 @@ python3 skills/medical-research-harness/scripts/test_study.py --lab /absolute/pa
 - [研究契约模板](skills/medical-research-harness/assets/protocol.md)
 - [可复现验证与历史修复](reviews/20261002-operability-review.md)
 - [设计与范围](system_design.md)
-- [参考文献与伴生论文（JOSS / CMPB）](Paper/README.md)
+- [真实研究接入与脱敏聚合证据指南](docs/real-study-integration-guide.md)
+- [参考文献与 JOSS 软件说明](Paper/README.md)
 - [贡献与离线验证指南](CONTRIBUTING.md)
 - [引用元数据](CITATION.cff)
 

@@ -2,7 +2,7 @@
 """Generate standalone 300-DPI workflow diagram for the JOSS software paper.
 
 Outputs:
-  - Paper/joss/figures/fig1_harness_workflow.png (2400 x 1050 px @ 300 DPI)
+  - Paper/joss/figures/fig1_harness_workflow.png (2400 x 1230 px @ 300 DPI)
   - Paper/joss/figures/fig1_harness_workflow.pdf (vector PDF)
 """
 
@@ -39,95 +39,95 @@ def build_figure() -> None:
         }
     )
 
-    # Exact 2400 x 1050 px at 300 DPI
-    fig = plt.figure(figsize=(8.0, 3.5), dpi=300, facecolor="white")
+    # 2400 x 1230 px at 300 DPI for crisp >=7pt print-equivalent readability in JOSS column width
+    fig = plt.figure(figsize=(8.0, 4.1), dpi=300, facecolor="white")
     ax = fig.add_axes([0.0, 0.0, 1.0, 1.0], facecolor="white")
     ax.set_xlim(0.0, 8.0)
-    ax.set_ylim(0.0, 3.5)
+    ax.set_ylim(0.0, 4.1)
     ax.axis("off")
 
     # Main Title & Subtitle
     ax.text(
         4.0,
-        3.29,
-        "Medical Research Harness: Zero-Dependency Python 3.10+ Standard-Library Workflow",
+        3.86,
+        "Medical Research Harness: Python 3.10+ Standard-Library Workflow",
         ha="center",
         va="center",
-        fontsize=10.0,
+        fontsize=11.2,
         fontweight="bold",
         color=TEXT_DARK,
     )
     ax.text(
         4.0,
-        3.07,
-        "Deterministic local provenance locking, planned-vs.-executed manifest auditing, and read-only code/XML verification",
+        3.60,
+        "Protocol SHA-256 locking, planned-vs.-executed manifest auditing, and read-only code/XML checks",
         ha="center",
         va="center",
-        fontsize=7.0,
+        fontsize=8.0,
         color=TEXT_MUTED,
     )
 
     stages = [
         {
             "num": "STAGE 1",
-            "subtag": "PROTOCOL LOCK",
+            "subtag": "LOCK",
             "title": "Governance &\nProtocol Lock",
             "color": SLATE_BLUE,
             "tint": BLUE_TINT,
-            "cli": "check_bundle.py\nstudy.py plan",
+            "cli": "check-bundle\nstudy plan",
             "bullets": [
-                "• Verifies phase role locators\n  & SHA-256 document locks",
-                "• Computes design_sha256 over\n  study.json, rows.csv, folds.csv",
-                "• Emits immutable task specs\n  initialized in DRAFT state",
+                "• Checks phase role locators\n  & document SHA-256 locks",
+                "• Binds design_sha256 over\n  protocol, rows, and folds",
+                "• Emits DRAFT task specs\n  (requires --lab preflight)",
             ],
         },
         {
             "num": "STAGE 2",
-            "subtag": "COHORT & FITS",
+            "subtag": "MANIFESTS",
             "title": "Deterministic\nManifest Audit",
             "color": SLATE_BLUE,
             "tint": BLUE_TINT,
-            "cli": "study.py audit\n--mode planned | executed",
+            "cli": "study audit\nplanned | executed",
             "bullets": [
-                "• Cohort partition disjointness\n  (patient_overlap, fold roles)",
-                "• Clinical temporal ordering\n  (feature_max_time <= index_time)",
-                "• Separates planned vs. runtime\n  executed fold-fit scopes",
+                "• Patient disjointness across\n  outer and internal folds",
+                "• Clinical temporal ordering\n  (feature_max <= index)",
+                "• Separates planned scopes\n  from executed fit logs",
             ],
         },
         {
             "num": "STAGE 3",
-            "subtag": "STATIC & XML",
-            "title": "Read-Only Code &\nJATS XML Audit",
+            "subtag": "READ-ONLY",
+            "title": "Code & JATS\nXML Inspection",
             "color": TEAL,
             "tint": TEAL_TINT,
-            "cli": "project_audit.py\nliterature.py",
+            "cli": "project-audit\nliterature",
             "bullets": [
-                "• Python AST + R/SAS static scan\n  under tree SHA-256 snapshot",
-                "• Expat XXE/DTD guard & equal-\n  length coordinate masking",
-                "• S001..S008 span offset lock:\n  $T[a_k : a_k + L_k] \\equiv q_k$",
+                "• Python AST & R/SAS scan\n  under tree SHA-256 lock",
+                "• Expat DTD/entity guard &\n  table/figure masking",
+                "• Exact span offset lock:\n  $T[a_k : a_k + L_k] = q_k$",
             ],
         },
         {
             "num": "STAGE 4",
-            "subtag": "SAFETY GATE",
-            "title": "Registry Reconciliation\n& Safety Gate",
+            "subtag": "RECONCILE",
+            "title": "Run Reconciliation\n& Safety Gate",
             "color": TEAL,
             "tint": TEAL_TINT,
-            "cli": "study.py summarize\nworkflow.py",
+            "cli": "study summarize\nworkflow",
             "bullets": [
-                "• Recomputes executed audits\n  freshly from source manifests",
-                "• Preserves FAILED, ABORTED,\n  RUNNING, and NOT_RUN runs",
-                "• Withholds execution approval\n  and scientific acceptance",
+                "• Recomputes executed audits\n  freshly from manifests",
+                "• Preserves FAILED, ABORTED,\n  RUNNING & NOT_RUN runs",
+                "• Withholds execution &\n  scientific acceptance",
             ],
         },
     ]
 
-    margin_x = 0.18
-    gap_x = 0.22
-    card_w = (8.0 - 2 * margin_x - 3 * gap_x) / 4.0  # 1.745 in
-    card_y = 0.59
-    card_h = 2.31
-    header_h = 0.62
+    margin_x = 0.14
+    gap_x = 0.20
+    card_w = (8.0 - 2 * margin_x - 3 * gap_x) / 4.0  # 1.78 in
+    card_y = 0.66
+    card_h = 2.74
+    header_h = 0.72
 
     for idx, st in enumerate(stages):
         x0 = margin_x + idx * (card_w + gap_x)
@@ -139,7 +139,7 @@ def build_figure() -> None:
             card_w,
             card_h,
             boxstyle="round,pad=0.0,rounding_size=0.07",
-            linewidth=1.25,
+            linewidth=1.35,
             edgecolor=st["color"],
             facecolor="white",
             zorder=2,
@@ -171,15 +171,15 @@ def build_figure() -> None:
             [x0, x0 + card_w],
             [top_y - header_h, top_y - header_h],
             color=st["color"],
-            linewidth=0.9,
+            linewidth=1.0,
             zorder=4,
         )
 
-        # Stage badge pill at top-left inside header + subtle right-aligned subtag
-        badge_w = 0.49
-        badge_h = 0.145
+        # Stage badge pill + subtle subtag
+        badge_w = 0.60
+        badge_h = 0.175
         badge = FancyBboxPatch(
-            (x0 + 0.09, top_y - 0.205),
+            (x0 + 0.08, top_y - 0.235),
             badge_w,
             badge_h,
             boxstyle="round,pad=0.0,rounding_size=0.04",
@@ -189,51 +189,51 @@ def build_figure() -> None:
         )
         ax.add_patch(badge)
         ax.text(
-            x0 + 0.09 + badge_w / 2.0,
-            top_y - 0.132,
+            x0 + 0.08 + badge_w / 2.0,
+            top_y - 0.148,
             st["num"],
             ha="center",
             va="center",
-            fontsize=5.6,
+            fontsize=6.8,
             fontweight="bold",
             color="white",
             zorder=6,
         )
         ax.text(
-            x0 + card_w - 0.09,
-            top_y - 0.132,
+            x0 + card_w - 0.08,
+            top_y - 0.148,
             st["subtag"],
             ha="right",
             va="center",
-            fontsize=5.2,
+            fontsize=6.3,
             fontweight="bold",
             color=st["color"],
             zorder=6,
         )
 
-        # Full-width stage title inside header below badge
+        # Stage title inside header
         ax.text(
-            x0 + 0.09,
-            top_y - 0.415,
+            x0 + 0.08,
+            top_y - 0.485,
             st["title"],
             ha="left",
             va="center",
-            fontsize=7.1,
+            fontsize=8.3,
             fontweight="bold",
             color=TEXT_DARK,
-            linespacing=1.16,
+            linespacing=1.15,
             zorder=6,
         )
 
         # Two-line CLI pill below header
-        cli_h = 0.28
-        cli_y = top_y - header_h - 0.34
+        cli_h = 0.35
+        cli_y = top_y - header_h - 0.42
         cli_box = FancyBboxPatch(
-            (x0 + 0.08, cli_y),
-            card_w - 0.16,
+            (x0 + 0.07, cli_y),
+            card_w - 0.14,
             cli_h,
             boxstyle="round,pad=0.0,rounding_size=0.04",
-            linewidth=0.75,
+            linewidth=0.85,
             edgecolor=BORDER_GRAY,
             facecolor=CODE_BG,
             zorder=4,
@@ -245,7 +245,7 @@ def build_figure() -> None:
             st["cli"],
             ha="center",
             va="center",
-            fontsize=5.75,
+            fontsize=7.2,
             family="monospace",
             fontweight="bold",
             color=st["color"],
@@ -253,44 +253,44 @@ def build_figure() -> None:
             zorder=5,
         )
 
-        # Three concise bullet blocks with generous vertical spacing
-        bullet_tops = [cli_y - 0.09, cli_y - 0.50, cli_y - 0.91]
+        # Three concise, larger-font bullet blocks
+        bullet_tops = [cli_y - 0.11, cli_y - 0.60, cli_y - 1.09]
         for b_y, b_txt in zip(bullet_tops, st["bullets"]):
             ax.text(
-                x0 + 0.09,
+                x0 + 0.08,
                 b_y,
                 b_txt,
                 ha="left",
                 va="top",
-                fontsize=6.05,
+                fontsize=7.15,
                 color=TEXT_DARK,
-                linespacing=1.22,
+                linespacing=1.24,
                 zorder=5,
             )
 
         # Horizontal connector arrow to next stage
         if idx < len(stages) - 1:
-            arr_x0 = x0 + card_w + 0.025
-            arr_x1 = x0 + card_w + gap_x - 0.025
+            arr_x0 = x0 + card_w + 0.02
+            arr_x1 = x0 + card_w + gap_x - 0.02
             arr_y = card_y + card_h * 0.48
             arrow_color = SLATE_BLUE if idx == 0 else TEAL
             arrow = FancyArrowPatch(
                 (arr_x0, arr_y),
                 (arr_x1, arr_y),
                 arrowstyle="-|>,head_length=5.5,head_width=3.6",
-                linewidth=1.6,
+                linewidth=1.7,
                 color=arrow_color,
                 zorder=6,
             )
             ax.add_patch(arrow)
 
-    # Bottom provenance & privacy guarantee bar (two balanced lines, zero clipping)
+    # Bottom provenance & privacy guarantee bar
     footer = FancyBboxPatch(
-        (margin_x, 0.09),
+        (margin_x, 0.10),
         8.0 - 2 * margin_x,
-        0.39,
+        0.44,
         boxstyle="round,pad=0.0,rounding_size=0.06",
-        linewidth=0.9,
+        linewidth=0.95,
         edgecolor=BORDER_GRAY,
         facecolor=FOOTER_BG,
         zorder=2,
@@ -298,13 +298,12 @@ def build_figure() -> None:
     ax.add_patch(footer)
     ax.text(
         4.0,
-        0.285,
-        "Pure Python 3.10+ Standard Library Only (ast, csv, hashlib, json, re, xml.parsers.expat, zipfile)\n"
-        "Local Row-Level Metadata Inputs; Aggregate Audit Diagnostics   •   "
-        "Atomic completion.json SHA-256 Artifact Binding",
+        0.32,
+        "Python 3.10+ Standard Library Core (ast, csv, hashlib, json, re, xml.parsers.expat, zipfile)\n"
+        "Local Row-Level Metadata Inputs; Aggregate Diagnostics   •   SHA-256 Artifact Binding (completion.json)",
         ha="center",
         va="center",
-        fontsize=6.15,
+        fontsize=7.3,
         color=TEXT_MUTED,
         linespacing=1.35,
         zorder=4,
